@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+# Handle both space-separated and comma-separated arguments
+for arg in "$@"; do
+    # Split on commas and process each domain
+    IFS=',' read -ra domains <<< "$arg"
+    for domain in "${domains[@]}"; do
+        # Trim whitespace
+        domain=$(echo "$domain" | xargs)
+        if [ -n "$domain" ]; then
+            echo "$domain" >> domain-blocks
+            git add domain-blocks
+            git commit -m "add $domain"
+        fi
+    done
+done
+
